@@ -1,6 +1,6 @@
 // ------------------- VARIÁVEIS DE CONFIGURAÇÃO DO AZURE AI VISION (OCR) -------------------
 
-// 🔒 Agora usando variáveis de ambiente (seguro)
+// 🔒 Usando variáveis de ambiente para segurança
 const visionEndpoint = window.ENV?.AZURE_VISION_ENDPOINT || "";
 const visionKey = window.ENV?.AZURE_VISION_KEY || "";
 
@@ -9,7 +9,6 @@ const fileInput = document.getElementById("imagem");
 const divMensagens = document.getElementById("div_mensagens");
 const divResultadosOCR = document.getElementById("div_resultados_ocr");
 const textoOCRArea = document.getElementById("texto_ocr");
-
 
 // ------------------- FUNÇÕES AUXILIARES DE UI -------------------
 function addLog(message, type = 'info') {
@@ -26,8 +25,7 @@ function clearResults() {
     addLog("Pronto para um novo processamento.", 'info');
 }
 
-
-// ------------------- FUNÇÃO PARA DESENHAR AS DELIMITAÇÕES DO OCR -------------------
+// ------------------- FUNÇÃO PARA DESENHAR DELIMITAÇÕES DO OCR -------------------
 function drawBoundingBoxes(imageFile, ocrData) {
     divResultadosOCR.innerHTML = "";
     divResultadosOCR.style.display = "block";
@@ -40,7 +38,6 @@ function drawBoundingBoxes(imageFile, ocrData) {
     imageContainer.id = "image_container";
     
     const img = document.createElement("img");
-    
     const reader = new FileReader();
     reader.onload = function (e) {
         img.src = e.target.result;
@@ -48,20 +45,14 @@ function drawBoundingBoxes(imageFile, ocrData) {
         divResultadosOCR.appendChild(imageContainer);
 
         img.onload = () => {
-            const originalWidth = img.naturalWidth;
-            const originalHeight = img.naturalHeight;
-            const currentWidth = img.clientWidth;
-            const currentHeight = img.clientHeight;
-
-            const scaleFactorX = currentWidth / originalWidth;
-            const scaleFactorY = currentHeight / originalHeight;
+            const scaleFactorX = img.clientWidth / img.naturalWidth;
+            const scaleFactorY = img.clientHeight / img.naturalHeight;
 
             const results = ocrData.analyzeResult?.readResults || ocrData.recognitionResults || [];
 
             results.forEach((page) => {
                 page.lines.forEach((line) => {
                     const box = line.boundingBox;
-
                     const x = box[0];
                     const y = box[1];
                     const w = box[4] - box[0];
@@ -69,12 +60,10 @@ function drawBoundingBoxes(imageFile, ocrData) {
 
                     const rect = document.createElement("div");
                     rect.className = "bounding-box-ocr";
-
                     rect.style.left = `${x * scaleFactorX}px`;
                     rect.style.top = `${y * scaleFactorY}px`;
                     rect.style.width = `${w * scaleFactorX}px`;
                     rect.style.height = `${h * scaleFactorY}px`;
-                    
                     imageContainer.appendChild(rect);
                 });
             });
@@ -82,7 +71,6 @@ function drawBoundingBoxes(imageFile, ocrData) {
     };
     reader.readAsDataURL(imageFile);
 }
-
 
 // ------------------- FUNÇÃO PRINCIPAL DE OCR -------------------
 async function executeOCR() {
@@ -131,7 +119,6 @@ async function executeOCR() {
 
         while (attempts < maxAttempts) {
             attempts++;
-            
             await new Promise((r) => setTimeout(r, 3000));
             addLog(`3/4: Tentativa ${attempts}/${maxAttempts}: Verificando status...`, 'info');
 
@@ -152,20 +139,10 @@ async function executeOCR() {
             }
         }
 
-        let texto = "";
         const results = data.analyzeResult?.readResults || data.recognitionResults;
-
-        if (results) {
-            texto = results
-                .map((page) => page.lines.map((line) => line.text).join(" "))
-                .join("\n");
-
-            textoOCRArea.value = texto;
-
-        } else {
-            texto = "Não foi possível ler o texto.";
-            textoOCRArea.value = texto;
-        }
+        textoOCRArea.value = results
+            ? results.map((page) => page.lines.map((line) => line.text).join(" ")).join("\n")
+            : "Não foi possível ler o texto.";
 
         drawBoundingBoxes(file, data);
 
