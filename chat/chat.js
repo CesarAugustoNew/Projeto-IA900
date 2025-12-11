@@ -25,7 +25,8 @@ function clearResults() {
     addLog("Pronto para um novo processamento.", 'info');
 }
 
-// ------------------- FUNÇÃO PARA DESENHAR DELIMITAÇÕES DO OCR -------------------
+
+// ------------------- FUNÇÃO PARA DESENHAR AS DELIMITAÇÕES DO OCR -------------------
 function drawBoundingBoxes(imageFile, ocrData) {
     divResultadosOCR.innerHTML = "";
     divResultadosOCR.style.display = "block";
@@ -38,6 +39,7 @@ function drawBoundingBoxes(imageFile, ocrData) {
     imageContainer.id = "image_container";
     
     const img = document.createElement("img");
+    
     const reader = new FileReader();
     reader.onload = function (e) {
         img.src = e.target.result;
@@ -45,8 +47,13 @@ function drawBoundingBoxes(imageFile, ocrData) {
         divResultadosOCR.appendChild(imageContainer);
 
         img.onload = () => {
-            const scaleFactorX = img.clientWidth / img.naturalWidth;
-            const scaleFactorY = img.clientHeight / img.naturalHeight;
+            const originalWidth = img.naturalWidth;
+            const originalHeight = img.naturalHeight;
+            const currentWidth = img.clientWidth;
+            const currentHeight = img.clientHeight;
+
+            const scaleFactorX = currentWidth / originalWidth;
+            const scaleFactorY = currentHeight / originalHeight;
 
             const results = ocrData.analyzeResult?.readResults || ocrData.recognitionResults || [];
 
@@ -64,6 +71,7 @@ function drawBoundingBoxes(imageFile, ocrData) {
                     rect.style.top = `${y * scaleFactorY}px`;
                     rect.style.width = `${w * scaleFactorX}px`;
                     rect.style.height = `${h * scaleFactorY}px`;
+                    
                     imageContainer.appendChild(rect);
                 });
             });
@@ -119,6 +127,7 @@ async function executeOCR() {
 
         while (attempts < maxAttempts) {
             attempts++;
+            
             await new Promise((r) => setTimeout(r, 3000));
             addLog(`3/4: Tentativa ${attempts}/${maxAttempts}: Verificando status...`, 'info');
 
@@ -139,10 +148,20 @@ async function executeOCR() {
             }
         }
 
+        let texto = "";
         const results = data.analyzeResult?.readResults || data.recognitionResults;
-        textoOCRArea.value = results
-            ? results.map((page) => page.lines.map((line) => line.text).join(" ")).join("\n")
-            : "Não foi possível ler o texto.";
+
+        if (results) {
+            texto = results
+                .map((page) => page.lines.map((line) => line.text).join(" "))
+                .join("\n");
+
+            textoOCRArea.value = texto;
+
+        } else {
+            texto = "Não foi possível ler o texto.";
+            textoOCRArea.value = texto;
+        }
 
         drawBoundingBoxes(file, data);
 
