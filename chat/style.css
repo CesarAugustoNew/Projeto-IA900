@@ -1,0 +1,140 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    color: #0078d4;
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #0078d4;
+    padding-bottom: 10px;
+}
+
+.input-section {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    background-color: #e6f2ff;
+}
+
+.input-section label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.input-section input[type="file"] {
+    margin-bottom: 15px;
+}
+
+#btnOCR {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#btnOCR:hover {
+    background-color: #218838;
+}
+
+/* Seção de Resultados */
+.result-section {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.result-section h3 {
+    color: #005a9e;
+    margin-bottom: 15px;
+}
+
+/* Área de Mensagens (Log) */
+#div_mensagens {
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding: 15px;
+    min-height: 100px;
+    overflow-y: auto;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    white-space: pre-wrap; /* Mantém quebras de linha e espaços */
+}
+
+.message {
+    margin-bottom: 8px;
+    padding: 5px;
+    border-bottom: 1px dotted #eee;
+    font-size: 0.9em;
+}
+
+.message.error {
+    color: red;
+    font-weight: bold;
+}
+
+.message.success {
+    color: green;
+}
+
+.message.info    {
+    color: #0078d4;
+}
+
+/* Container da Imagem com Bounding Boxes */
+#div_resultados_ocr {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+#image_container {
+    position: relative; 
+    display: inline-block;
+}
+
+#image_container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Estilo para a Delimitação (Bounding Box) */
+.bounding-box-ocr {
+    position: absolute;
+    border: 2px solid #ff0000; 
+    background-color: rgba(255, 0, 0, 0.15); 
+    pointer-events: none; 
+    box-sizing: border-box;
+    z-index: 10; 
+}
+
+#texto_ocr {
+    border: 1px solid #ccc; 
+    padding: 10px;
+    border-radius: 6px;
+     border-radius: 6px;
+    resize: vertical; 
+}

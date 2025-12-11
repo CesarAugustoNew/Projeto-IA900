@@ -1,0 +1,15 @@
+# Arquivos que contêm segredos locais
+config.js
+
+# Node (se você usar no futuro)
+node_modules/
+
+# Cache do VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

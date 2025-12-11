@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demonstração de OCR com Azure AI Vision</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <div class="container">
+        <h1> Demonstração de OCR com Azure AI Vision</h1>
+
+        <div class="input-section">
+            <label for="imagem">Selecione uma Imagem (PNG, JPG, PDF):</label>
+            <input type="file" id="imagem" accept="image/png, image/jpeg, application/pdf">
+            <button id="btnOCR">Executar OCR</button>
+        </div>
+
+        <div class="result-section">
+            <h3> Log e Resultado do Processamento</h3>
+            <div id="div_mensagens">Aguardando envio de imagem...</div>
+
+            <div id="div_resultados_ocr">
+                </div>
+
+            <h3> Texto Reconhecido:</h3>
+            <textarea id="texto_ocr" rows="8" cols="50" readonly style="width: 100%;"></textarea>
+        </div>
+
+    </div>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
